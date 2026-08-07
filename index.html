@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frog Jump: A or AN?</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="game-shell" aria-label="Frog Jump learning game">
+    <button class="sound-toggle" id="sound-toggle" type="button" aria-label="Mute sound" aria-pressed="false">♪</button>
+    <section class="screen start-screen is-active" id="start-screen" aria-labelledby="start-title">
+      <div class="start-card">
+        <p class="eyebrow">WORD ADVENTURE</p>
+        <h1 id="start-title">FROG JUMP</h1>
+        <p class="subtitle">A or AN?</p>
+
+        <div class="frog-stage frog-stage--start">
+          <span class="reeds reeds-left" aria-hidden="true"></span>
+          <div class="frog-image-wrap">
+            <img class="frog-image" src="images/frog.png" alt="A friendly frog ready to jump">
+          </div>
+          <span class="lily-pad lily-pad-small" aria-hidden="true"></span>
+        </div>
+
+        <p class="instruction">Help the frog jump to the correct lily pad.</p>
+        <button class="primary-button" id="start-button" type="button">START</button>
+      </div>
+    </section>
+
+    <section class="screen game-screen" id="game-screen" aria-labelledby="game-heading" hidden>
+      <header class="game-header">
+        <div class="score-box" aria-label="Current score">
+          <strong id="score-display">Score: 0 / 15</strong>
+        </div>
+        <p class="round-label" id="game-heading">Choose the right word!</p>
+        <div class="progress-box" aria-label="Question progress">
+          <span>Progress</span>
+          <strong id="question-display">1 / 15</strong>
+        </div>
+      </header>
+
+      <div class="word-card">
+        <p>___ <span id="current-word">elephant</span></p>
+      </div>
+
+      <p class="feedback" id="feedback" aria-live="polite">Which lily pad is correct?</p>
+
+      <div class="pond-play-area">
+        <button class="answer-pad answer-pad--left" data-article="a" type="button" aria-label="Choose A">
+          <span>A</span>
+        </button>
+
+        <div class="frog-stage frog-stage--game" id="game-frog" data-position="1">
+          <div class="frog-image-wrap" id="game-frog-image">
+            <img class="frog-image" src="images/frog.png" alt="A friendly frog">
+          </div>
+        </div>
+
+        <button class="answer-pad answer-pad--right" data-article="an" type="button" aria-label="Choose AN">
+          <span>AN</span>
+        </button>
+      </div>
+
+      <div class="progress-dots" id="progress-dots" aria-label="0 of 15 words completed"></div>
+    </section>
+
+    <section class="screen final-screen" id="final-screen" aria-labelledby="final-title" hidden>
+      <div class="final-card">
+        <div class="celebration" aria-hidden="true">✦ 🪷 ✦</div>
+        <h2 id="final-title">FANTASTIC!</h2>
+        <p>You helped the frog cross the pond!</p>
+        <div class="final-score">
+          <span>FINAL SCORE</span>
+          <strong id="final-score-display">0 / 15</strong>
+        </div>
+        <div class="frog-stage frog-stage--final">
+          <div class="frog-image-wrap">
+            <img class="frog-image" src="images/frog.png" alt="The happy frog">
+          </div>
+        </div>
+        <button class="primary-button" id="play-again-button" type="button">PLAY AGAIN</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
