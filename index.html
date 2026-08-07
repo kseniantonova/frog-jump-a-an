@@ -25,10 +25,12 @@
 
         <p class="instruction">Help the frog jump to the correct lily pad.</p>
         <button class="primary-button" id="start-button" type="button">START</button>
+        <button class="secondary-button" id="start-help-button" type="button">HOW TO PLAY</button>
       </div>
     </section>
 
     <section class="screen game-screen" id="game-screen" aria-labelledby="game-heading" hidden>
+      <button class="help-button" id="game-help-button" type="button" aria-label="How to play">?</button>
       <header class="game-header">
         <div class="score-box" aria-label="Current score">
           <strong id="score-display">Score: 0 / 15</strong>
@@ -82,6 +84,22 @@
         <button class="primary-button" id="play-again-button" type="button">PLAY AGAIN</button>
       </div>
     </section>
+
+    <div class="instructions-modal" id="instructions-modal" hidden>
+      <div class="instructions-dialog" role="dialog" aria-modal="true" aria-labelledby="instructions-title" aria-describedby="instructions-copy">
+        <span class="modal-pad modal-pad--left" aria-hidden="true"></span>
+        <span class="modal-pad modal-pad--right" aria-hidden="true"></span>
+        <button class="modal-close" id="modal-close-button" type="button" aria-label="Close instructions">&times;</button>
+        <h2 id="instructions-title">HOW TO PLAY</h2>
+        <div class="instructions-copy" id="instructions-copy">
+          <p>🐸 Look at the word.</p>
+          <p>Choose A or AN.</p>
+          <p>Help the frog jump to the correct lily pad!</p>
+          <p>Get all 15 answers right to cross the pond.</p>
+        </div>
+        <button class="primary-button modal-confirm" id="modal-confirm-button" type="button">GOT IT!</button>
+      </div>
+    </div>
   </main>
 
   <script src="script.js"></script>

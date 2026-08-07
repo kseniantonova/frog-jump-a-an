@@ -34,6 +34,11 @@ const progressDots = document.querySelector("#progress-dots");
 const gameFrog = document.querySelector("#game-frog");
 const gameFrogImage = document.querySelector("#game-frog-image");
 const soundToggle = document.querySelector("#sound-toggle");
+const startHelpButton = document.querySelector("#start-help-button");
+const gameHelpButton = document.querySelector("#game-help-button");
+const instructionsModal = document.querySelector("#instructions-modal");
+const modalCloseButton = document.querySelector("#modal-close-button");
+const modalConfirmButton = document.querySelector("#modal-confirm-button");
 
 let audioContext;
 let musicTimer;
@@ -94,6 +99,11 @@ let shuffledWords = [];
 let currentIndex = 0;
 let score = 0;
 let inputLocked = false;
+let instructionsOpen = false;
+let lastFocusedElement;
+let nextWordTimer;
+let nextWordDueAt = 0;
+let nextWordDelayRemaining = 0;
 
 function shuffle(items) {
   const shuffled = [...items];
@@ -185,7 +195,7 @@ function showNextWord() {
 }
 
 function handleAnswer(event) {
-  if (inputLocked) return;
+  if (inputLocked || instructionsOpen) return;
 
   const selectedButton = event.currentTarget;
   const selectedArticle = selectedButton.dataset.article;
@@ -218,15 +228,82 @@ function handleAnswer(event) {
     selectedArticle === "a" ? "jump-to-left" : "jump-to-right"
   );
 
-  window.setTimeout(() => {
+  nextWordDueAt = performance.now() + 700;
+  nextWordTimer = window.setTimeout(() => {
+    nextWordTimer = undefined;
+    nextWordDueAt = 0;
     gameFrogImage.classList.remove("is-jumping", "jump-to-left", "jump-to-right");
     showNextWord();
   }, 700);
 }
 
+function openInstructions(event) {
+  if (instructionsOpen) return;
+  instructionsOpen = true;
+  lastFocusedElement = event?.currentTarget || document.activeElement;
+
+  if (nextWordTimer) {
+    window.clearTimeout(nextWordTimer);
+    nextWordTimer = undefined;
+    nextWordDelayRemaining = Math.max(0, nextWordDueAt - performance.now());
+  }
+
+  document.body.classList.add("instructions-are-open");
+  Object.values(screens).forEach((screen) => { screen.inert = true; });
+  soundToggle.inert = true;
+  instructionsModal.hidden = false;
+  modalCloseButton.focus();
+}
+
+function closeInstructions() {
+  if (!instructionsOpen) return;
+  instructionsOpen = false;
+  instructionsModal.hidden = true;
+  document.body.classList.remove("instructions-are-open");
+  Object.values(screens).forEach((screen) => { screen.inert = false; });
+  soundToggle.inert = false;
+
+  if (nextWordDelayRemaining > 0) {
+    nextWordDueAt = performance.now() + nextWordDelayRemaining;
+    nextWordTimer = window.setTimeout(() => {
+      nextWordTimer = undefined;
+      nextWordDueAt = 0;
+      gameFrogImage.classList.remove("is-jumping", "jump-to-left", "jump-to-right");
+      showNextWord();
+    }, nextWordDelayRemaining);
+    nextWordDelayRemaining = 0;
+  }
+
+  lastFocusedElement?.focus();
+}
+
+function handleModalKeydown(event) {
+  if (!instructionsOpen) return;
+
+  if (event.key === "Escape") {
+    event.preventDefault();
+    closeInstructions();
+    return;
+  }
+
+  if (event.key === "Tab") {
+    const focusable = [modalCloseButton, modalConfirmButton];
+    const currentIndex = focusable.indexOf(document.activeElement);
+    const direction = event.shiftKey ? -1 : 1;
+    const nextIndex = (currentIndex + direction + focusable.length) % focusable.length;
+    event.preventDefault();
+    focusable[nextIndex].focus();
+  }
+}
+
 startButton.addEventListener("click", startGame);
 playAgainButton.addEventListener("click", startGame);
 answerButtons.forEach((button) => button.addEventListener("click", handleAnswer));
+startHelpButton.addEventListener("click", openInstructions);
+gameHelpButton.addEventListener("click", openInstructions);
+modalCloseButton.addEventListener("click", closeInstructions);
+modalConfirmButton.addEventListener("click", closeInstructions);
+document.addEventListener("keydown", handleModalKeydown, true);
 soundToggle.addEventListener("click", () => {
   soundMuted = !soundMuted;
   soundToggle.textContent = soundMuted ? "♩" : "♪";

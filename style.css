@@ -145,6 +145,25 @@ h1, h2 {
 .primary-button:active { transform: translateY(5px); box-shadow: 0 2px 0 #164c32; }
 .primary-button:focus-visible, .answer-pad:focus-visible { outline: 5px solid var(--sun); outline-offset: 5px; }
 
+.secondary-button {
+  display: block;
+  min-width: 170px;
+  margin: 18px auto 0;
+  padding: 11px 25px;
+  color: var(--green-dark);
+  font-size: .95rem;
+  font-weight: 900;
+  letter-spacing: .07em;
+  border: 3px solid var(--green-dark);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .58);
+  cursor: pointer;
+}
+
+.secondary-button:hover { background: #e8f2cf; transform: translateY(-2px); }
+.secondary-button:active { transform: translateY(1px); }
+.secondary-button:focus-visible, .help-button:focus-visible, .modal-close:focus-visible { outline: 4px solid var(--sun); outline-offset: 3px; }
+
 .frog-stage { position: relative; display: grid; place-items: center; }
 .frog-stage--start { height: 190px; margin-top: 15px; }
 .frog-stage--game {
@@ -196,6 +215,95 @@ h1, h2 {
 }
 
 .game-screen { padding-top: 22px; }
+
+.help-button {
+  position: absolute;
+  top: 78px;
+  right: 24px;
+  z-index: 7;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  color: var(--green-dark);
+  font-size: 1.2rem;
+  font-weight: 1000;
+  border: 3px solid var(--green-dark);
+  border-radius: 50%;
+  background: rgba(255, 250, 240, .9);
+  box-shadow: 0 4px 0 rgba(22, 76, 50, .35);
+  cursor: pointer;
+}
+
+.help-button:hover { background: #e8f2cf; transform: translateY(-2px); }
+.help-button:active { transform: translateY(2px); box-shadow: 0 2px 0 rgba(22, 76, 50, .35); }
+
+.instructions-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(28, 64, 53, .58);
+  backdrop-filter: blur(4px);
+  animation: modal-fade-in .22s ease-out;
+}
+
+.instructions-modal[hidden] { display: none; }
+
+.instructions-dialog {
+  position: relative;
+  width: min(100%, 510px);
+  max-height: calc(100vh - 48px);
+  overflow: hidden;
+  padding: 34px clamp(25px, 6vw, 48px) 38px;
+  text-align: center;
+  border: 5px solid #426d43;
+  border-radius: 34px;
+  background: linear-gradient(145deg, #fffdf5, #f3f7df);
+  box-shadow: 0 18px 0 rgba(27, 65, 48, .2), 0 25px 50px rgba(18, 48, 42, .28);
+}
+
+.instructions-dialog h2 {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(2rem, 7vw, 3.35rem);
+  line-height: 1;
+}
+
+.instructions-copy { position: relative; z-index: 1; margin: 27px 0 28px; }
+.instructions-copy p { margin: 0 0 14px; font-size: clamp(1rem, 2.7vw, 1.2rem); font-weight: 800; line-height: 1.35; }
+.instructions-copy p:last-child { margin-bottom: 0; }
+.modal-confirm { position: relative; z-index: 1; min-width: 170px; padding-block: 13px; font-size: 1rem; }
+
+.modal-close {
+  position: absolute;
+  top: 13px;
+  right: 15px;
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  padding: 0 0 3px;
+  color: var(--green-dark);
+  font-size: 1.7rem;
+  font-weight: 900;
+  line-height: 1;
+  border: 0;
+  border-radius: 50%;
+  background: #dfeebd;
+  cursor: pointer;
+}
+
+.modal-close:hover { background: #cadf96; }
+.modal-pad { position: absolute; width: 110px; height: 35px; border-radius: 50%; background: rgba(108, 157, 73, .16); transform: rotate(-12deg); }
+.modal-pad--left { left: -35px; bottom: 35px; }
+.modal-pad--right { top: 73px; right: -48px; transform: rotate(15deg); }
+.instructions-are-open .game-screen * { animation-play-state: paused !important; }
+
+@keyframes modal-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 
 .game-header {
   position: relative;
@@ -392,6 +500,10 @@ h1, h2 {
   .answer-pad span { font-size: 2.4rem; }
   .progress-dots { gap: 6px; }
   .progress-dot { width: 13px; height: 13px; border-width: 2px; }
+  .help-button { top: 66px; right: 14px; width: 34px; height: 34px; }
+  .instructions-modal { padding: 14px; }
+  .instructions-dialog { padding: 29px 20px 28px; border-radius: 28px; }
+  .instructions-copy { margin: 22px 0; }
 
   .frog-image-wrap.jump-to-left { --jump-x: clamp(-135px, -23vw, -82px); }
   .frog-image-wrap.jump-to-right { --jump-x: clamp(82px, 23vw, 135px); }
@@ -403,6 +515,7 @@ h1, h2 {
   .frog-image-wrap { width: 150px; height: 160px; }
   .frog-stage--game .frog-image-wrap { width: 112px; height: 119px; }
   .answer-pad { width: clamp(170px, 29%, 245px); }
+  .help-button { right: 28px; top: 78px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
